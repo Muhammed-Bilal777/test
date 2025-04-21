@@ -3,6 +3,7 @@ import request from "supertest";
 import app from ".";
 
 describe("GET /", () => {
+  process.env.NODE_ENV = "test";
   it('responds with "Hello from Express + TypeScript!"', async () => {
     const res = await request(app).get("/");
     expect(res.status).toBe(200);
