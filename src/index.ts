@@ -8,6 +8,9 @@ const PORT = 3000;
 app.get("/", (req, res) => {
   res.send("Hello from Express + TypeScript!");
 });
+app.get("/test", (req, res) => {
+  res.send("test file setup!");
+});
 
 // Start server
 app.listen(PORT, () => {
