@@ -1,4 +1,3 @@
-# .github/workflows/load-test.yml
 name: Load Test with JMeter
 
 on:
@@ -15,9 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Set up Java (Temurin JDK)
+        uses: actions/setup-java@v3 # or @v2 per your preference
         with:
+          distribution: temurin
           java-version: "11"
 
       - name: Install JMeter
