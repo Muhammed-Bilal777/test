@@ -1,3 +1,50 @@
+# name: Load Test with JMeter
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches:
+#       - master
+
+# jobs:
+#   load-test:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
+
+#       - name: Set up Java (Temurin JDK)
+#         uses: actions/setup-java@v3 # or @v2 per your preference
+#         with:
+#           distribution: temurin
+#           java-version: "11"
+
+#       - name: Install JMeter
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y jmeter
+#           jmeter --version
+
+#       - name: Install Node.js dependencies
+#         run: npm ci
+
+#       - name: Start the server in background
+#         run: |
+#           npm start &
+#           sleep 5
+
+#       - name: Run JMeter Load Test
+#         run: |
+#           mkdir -p reports
+#           jmeter -n -t load-test.jmx -l reports/results.jtl -e -o reports/html
+
+#       - name: Upload JMeter HTML Report
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: jmeter-report
+#           path: reports/html
+
 name: Load Test with JMeter
 
 on:
@@ -14,20 +61,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Java (Temurin JDK)
-        uses: actions/setup-java@v3 # or @v2 per your preference
+      - name: Set up Java (Temurin JDK 11)
+        uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: "11"
 
-      - name: Install JMeter
+      - name: Install JMeter 5.5
         run: |
-          sudo apt-get update
-          sudo apt-get install -y jmeter
-          jmeter --version
+          curl -sL https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.5.tgz -o jmeter.tgz
+          tar -xzf jmeter.tgz
+          mv apache-jmeter-5.5 jmeter
+          chmod +x jmeter/bin/jmeter
+          ./jmeter/bin/jmeter --version
 
       - name: Install Node.js dependencies
-        run: npm ci
+        run: npm install
 
       - name: Start the server in background
         run: |
@@ -37,7 +86,18 @@ jobs:
       - name: Run JMeter Load Test
         run: |
           mkdir -p reports
-          jmeter -n -t load-test.jmx -l reports/results.jtl -e -o reports/html
+          # use the freshly downloaded JMeter binary
+          ./jmeter/bin/jmeter \
+            -n \
+            -t load-test.jmx \
+            -l reports/results.jtl \
+            -e \
+            -o reports/html
+
+      - name: list generated files
+        run: |
+          echo "==== reports folder ===="
+          ls -R reports
 
       - name: Upload JMeter HTML Report
         uses: actions/upload-artifact@v4
