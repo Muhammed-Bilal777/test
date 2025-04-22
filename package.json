@@ -20,7 +20,9 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "dev": "ts-node ./src/index.ts",
-    "test": "npx jest "
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "npm run dev",
+    "test": "npx jest"
   }
 }

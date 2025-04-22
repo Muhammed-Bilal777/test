@@ -21,15 +21,17 @@ jobs:
 
       - name: Install JMeter
         run: |
-          sudo apt update
-          sudo apt install -y jmeter
+          sudo apt-get update
+          sudo apt-get install -y jmeter
           jmeter --version
+
+      - name: Install Node.js dependencies
+        run: npm ci
 
       - name: Start the server in background
         run: |
-          npm install
-          nohup npm start &  # Assumes `npm start` runs your Express app
-          sleep 5  # Wait for server to be ready
+          npm start &
+          sleep 5
 
       - name: Run JMeter Load Test
         run: |
@@ -37,7 +39,7 @@ jobs:
           jmeter -n -t load-test.jmx -l reports/results.jtl -e -o reports/html
 
       - name: Upload JMeter HTML Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: jmeter-report
           path: reports/html
