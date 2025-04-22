@@ -67,13 +67,13 @@ jobs:
           distribution: temurin
           java-version: "11"
 
-      - name: Install JMeter 5.5
+      - name: Install JMeter 5.6.3
         run: |
-          curl -sL https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.5.tgz -o jmeter.tgz
+          curl -sL https://dlcdn.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz -o jmeter.tgz
           tar -xzf jmeter.tgz
-          mv apache-jmeter-5.5 jmeter
+          mv apache-jmeter-5.6.3 jmeter
           chmod +x jmeter/bin/jmeter
-          ./jmeter/bin/jmeter --version
+          jmeter/bin/jmeter --version
 
       - name: Install Node.js dependencies
         run: npm install
@@ -86,8 +86,7 @@ jobs:
       - name: Run JMeter Load Test
         run: |
           mkdir -p reports
-          # use the freshly downloaded JMeter binary
-          ./jmeter/bin/jmeter \
+          jmeter/bin/jmeter \
             -n \
             -t load-test.jmx \
             -l reports/results.jtl \
@@ -95,9 +94,7 @@ jobs:
             -o reports/html
 
       - name: list generated files
-        run: |
-          echo "==== reports folder ===="
-          ls -R reports
+        run: ls -R reports
 
       - name: Upload JMeter HTML Report
         uses: actions/upload-artifact@v4
