@@ -4,7 +4,7 @@ import app from ".";
 
 describe("GET /", () => {
   process.env.NODE_ENV = "test";
-  it('responds with "Hello from Express + TypeScript!"', async () => {
+  it("Hello from Express + TypeScript! deployed on render.com", async () => {
     const res = await request(app).get("/");
     expect(res.status).toBe(200);
     expect(res.text).toBe("Hello from Express + TypeScript!");
