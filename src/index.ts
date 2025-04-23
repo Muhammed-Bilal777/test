@@ -6,6 +6,7 @@ const PORT = 3000;
 
 // Simple GET endpoint
 app.get("/", (req, res) => {
+  console.log("express server started ");
   res.send("Hello from Express + TypeScript!");
 });
 app.get("/test", (req, res) => {

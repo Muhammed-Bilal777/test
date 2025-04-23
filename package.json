@@ -22,7 +22,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "start": "npm run dev",
+    "start": "node dist/index.js",
     "test": "npx jest"
   }
 }
